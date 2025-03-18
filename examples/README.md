@@ -1,20 +1,26 @@
 # Sample Network Automation Project leveraging Nornir and Nornir_pygnmi
-This directory contains an example of network automation project using GNMI/YANG framework leveraging `nornir` and `nornir_pygnmi`.
+
+This directory contains an example of network automation project using gNMI/YANG framework leveraging `nornir` and `nornir_pygnmi`.
 
 ## Requirements
+
 The following requirements are used for such a project:
+
 ```
 nornir_pygnmi
 nornir_utils
 ```
 
 Install them as normally:
+
 ```
-$ pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 ## Directory structure
+
 The structure of your network automation project leveraging `nornir_pygnmi` is pretty standard for Nornir (for simplicity, we show default inventory plugin with local YAML files):
+
 ```
 +--certs
 |  +--device_cert.pem
@@ -26,10 +32,12 @@ The structure of your network automation project leveraging `nornir_pygnmi` is p
 
 What is not standard for Nornir is the `certs` directory, which stores SSL certificates you would use to authenticate against network devices. For some network operating systems (e.g., `Arista EOS`) it is possible to automatically retrieve the certificate from the network device itself; hence, this folder would be not needed. At the same time, other network operating systems (e.g., `Cisco NX-OS`) doesn't allow you to do so, and you, therefore, would need to download certificate from the network device and put in such a directory.
 
-*You may think about different hierarchy of directories, we just suggest you a nice starting point for your nornir_pygnmi journey.*
+*You may use different hierarchy of directories, we just suggest you a nice starting point for your nornir_pygnmi journey.*
 
 ## Config files
+
 The config file `config.yaml` is absolutely standard for Nornir and no mentions about `nornir_pygnmi` is needed there:
+
 ```yaml
 ---
 inventory:
@@ -50,8 +58,10 @@ runner:
 ...
 ```
 
-## Invenvoty
-In the `connectivity_options` of the host you need to specify at least `pygnmi: {}` if you don't need providing any extra arguments. 
+## Inventory
+
+In the `connectivity_options` of the host you need to specify at least `pygnmi: {}` if you don't need providing any extra arguments.
+
 ```yaml
 ---
 dev-pygnmi-nxos1:
@@ -61,11 +71,12 @@ dev-pygnmi-nxos1:
     pygnmi:
       extras:
         path_cert: "./certs/dev-pygnmi-nxos1.pem"
-        skip_verify: True
+        insecure: True
 ...
 ```
 
 **Update**: You can specify port solely in `connection_options/pygnmi` to make sure that port affets only GNMI connection:
+
 ```yaml
 ---
 dev-pygnmi-nxos1:
@@ -75,15 +86,18 @@ dev-pygnmi-nxos1:
       port: 50051
       extras:
         path_cert: "./certs/dev-pygnmi-nxos1.pem"
-        skip_verify: True
+        insecure: True
 ...
 ```
 
 ### Pygnmi arguments
+
 If you need, specify `extras` context and add there all key-value pairs you would normally provide to `gNMIclient()` class of `pygnmi` library. [See pygnmi documentation for further reference](https://github.com/akarneliuk/pygnmi).
 
 ## Nornir script
+
 Sample Python script leveraging `nornir_pygnmi`:
+
 ```python
 """Sample nornir_pygnmi script"""
 # Modules
@@ -103,7 +117,7 @@ if __name__ == "__main__":
 
     # Perform action
     result1 = nrn.run(task=gnmi_capabilities)
-    result2 = nrn.run(task=gnmi_get, path=["/System/acl-items"])
+    result2 = nrn.run(task=gnmi_get, path=["/system/acl-items"])
     print_result(result1)
     print_result(result2)
 ```
@@ -280,3 +294,4 @@ vvvv gnmi_get ** changed : False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
                                                                                                                             'vni': 16777216}]}}]}}}}]}]}
 ^^^^ END gnmi_get ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ```
+
