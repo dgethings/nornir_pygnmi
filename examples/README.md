@@ -71,7 +71,7 @@ dev-pygnmi-nxos1:
     pygnmi:
       extras:
         path_cert: "./certs/dev-pygnmi-nxos1.pem"
-        insecure: True
+        skip_verify: True
 ...
 ```
 
@@ -86,7 +86,7 @@ dev-pygnmi-nxos1:
       port: 50051
       extras:
         path_cert: "./certs/dev-pygnmi-nxos1.pem"
-        insecure: True
+        skip_verify: True
 ...
 ```
 
@@ -294,4 +294,3 @@ vvvv gnmi_get ** changed : False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
                                                                                                                             'vni': 16777216}]}}]}}}}]}]}
 ^^^^ END gnmi_get ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ```
-
